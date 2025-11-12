@@ -2,6 +2,33 @@
 
 A user management app built for the Zeller coding challenge. It pulls users from a GraphQL API, stores them in SQLite locally, and lets you do the usual CRUD stuff with some filtering and search thrown in.
 
+## Getting Started
+
+Easiest way - just run these two commands:
+
+```bash
+bash setup.sh    # One time thing to install everything
+bash start.sh    # Starts the servers
+```
+
+The start script opens two terminal tabs - one for the mock GraphQL server (on port 9002) and one for Expo. Once Expo's running, just press `i` for iOS or `a` for Android.
+
+If you don't want the automatic tab thing, you can do it manually:
+
+```bash
+# Terminal 1
+cd mock-server && npm start
+
+# Terminal 2
+npm start
+```
+
+Then press `i` or `a` when prompted.
+
+You can also scan the QR code with Expo Go on your phone if you prefer that.
+
+
+
 ## What's in here
 
 Built out a few things:
@@ -32,30 +59,6 @@ Nice to have:
 - Watchman (`brew install watchman`) - makes things faster
 - Expo Go on your phone for quick testing
 
-## Getting Started
-
-Easiest way - just run these two commands:
-
-```bash
-bash setup.sh    # One time thing to install everything
-bash start.sh    # Starts the servers
-```
-
-The start script opens two terminal tabs - one for the mock GraphQL server (on port 9002) and one for Expo. Once Expo's running, just press `i` for iOS or `a` for Android.
-
-If you don't want the automatic tab thing, you can do it manually:
-
-```bash
-# Terminal 1
-cd mock-server && npm start
-
-# Terminal 2
-npm start
-```
-
-Then press `i` or `a` when prompted.
-
-You can also scan the QR code with Expo Go on your phone if you prefer that.
 
 ## Tests
 
