@@ -60,9 +60,9 @@ You can also scan the QR code with Expo Go on your phone if you prefer that.
 ## Tests
 
 ```bash
-npm test              # Run all tests
-npm test -- --watch   # Watch mode for development
-npm test -- --coverage # See coverage report
+npm test              # All tests
+npm run test:watch    # Watch mode
+npm run test:coverage # See coverage
 ```
 
 Got around 92% coverage on the important stuff.
