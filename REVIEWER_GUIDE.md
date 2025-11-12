@@ -1,21 +1,17 @@
-# Reviewer Quick Start Guide
+# Quick Start for Reviewers
 
-## Running the App (2 commands)
+## Getting it running
+
+Just two commands:
 
 ```bash
-bash setup.sh    # One time setup
-bash start.sh    # Start everything
+bash setup.sh    # First time only
+bash start.sh    # Every time after
 ```
 
-That's it! The `start.sh` script opens two new terminal tabs:
-1. Mock GraphQL server (port 9002)
-2. Expo dev server
+The start script will open two terminal tabs - one for the mock server (port 9002) and one for Expo. When Expo's ready, hit `i` for iOS or `a` for Android.
 
-Once Expo starts, press `i` for iOS or `a` for Android.
-
-### Manual Alternative
-
-If you prefer manual control:
+If you don't like the auto-tab thing:
 
 ```bash
 # Terminal 1
@@ -25,87 +21,75 @@ cd mock-server && npm start
 npm start
 ```
 
-## Testing the Features
+## Features to check out
 
-### Initial Load
-- App fetches 4 users from GraphQL on startup
-- Users are stored in SQLite
-- List shows alphabetically grouped users
+**When it first loads:**
+The app grabs 4 test users from the GraphQL server and stores them in SQLite. They show up grouped alphabetically.
 
-### Tab Switching & Swipe
-- **Click tabs**: Click All/Admin/Manager tabs to switch
-- **Swipe**: Swipe left/right to navigate between pages
-- **Indicator animation**: Watch the blue indicator smoothly slide to the active tab
-- **Two-way sync**: Swiping updates the tab, clicking tabs updates the page
-- Active tab shows blue text with light blue indicator behind
-- List filters automatically
+**Tab navigation:**
+You can click between All/Admin/Manager tabs, or just swipe left and right. The blue indicator animates to follow along. Try both - they sync with each other.
 
-### Search
-- Click search icon (top right) to open search bar
-- Type to filter users in real-time
-- Click X icon to close search and return to tabs
-- Search works across currently selected tab filter
+**Search:**
+Tap the search icon in the top right to bring up the search bar. Type to filter users, click the X to close it. Works within whatever tab you're on.
 
-### Add User
-- Tap blue + button (bottom right)
-- Fill in: First Name, Last Name, Email
-- Select Admin or Manager role
-- Tap "Create User"
-- Validation errors show if invalid
+**Adding users:**
+Hit the blue + button, fill in first name, last name, email, pick a role, and create. Form validation will catch mistakes.
 
-### Pull to Refresh
-- Pull down on user list
-- Syncs latest data from GraphQL
-- Shows loading indicator
+**Editing users:**
+Tap any user to edit their info or delete them.
 
-## Running Tests
+**Pull to refresh:**
+Drag down on the list to sync with the GraphQL server again.
+
+## Tests
 
 ```bash
 npm test              # All tests
 npm run test:watch    # Watch mode
-npm run test:coverage # Coverage report
+npm run test:coverage # See coverage
 ```
 
+Currently sitting at ~92% coverage.
 
-## Code to Review
+## Files worth looking at
 
-**Architecture**
-- `src/database/db.ts` - Clean database abstraction
-- `src/hooks/useUsers.ts` - State management
-- `src/services/graphql.ts` - API integration
+If you want to dig into the code:
 
-**UI Implementation**
-- `src/screens/HomeScreen.tsx` - Tab animations
+**Core architecture:**
+- `src/database/db.ts` - SQLite wrapper
+- `src/hooks/useUsers.ts` - Main data/state management
+- `src/services/graphql.ts` - Apollo setup
+
+**UI stuff:**
+- `src/screens/HomeScreen.tsx` - Tab animations and swipe handling
 - `src/screens/AddUserScreen.tsx` - Form with validation
-- `src/components/` - Reusable components
+- `src/screens/ProfileScreen.tsx` - Edit/delete users
+- `src/components/` - Reusable bits
 
-**Testing**
+**Tests:**
 - `src/__tests__/` - Unit and component tests
 
-**Documentation**
-- `ARCHITECTURE.md` - Design decisions
-- `README.md` - Setup and overview
+**Docs:**
+- `README.md` - Setup instructions
+- `ARCHITECTURE.md` - Design decisions (if you care about that)
 
-## What's Working
+## What works
 
-✅ GraphQL data fetching
-✅ SQLite local storage
-✅ Add/update/delete users
-✅ Form validation (all requirements)
-✅ Tab filtering with animations
-✅ **Swipeable pages** (react-native-pager-view)
-✅ Tab ↔ Swipe bidirectional sync
-✅ Search functionality
-✅ Pull-to-refresh
-✅ Alphabetical grouping
-✅ TypeScript strict mode
-✅ Unit & component tests
-✅ Clean, modular, documented code
+The main stuff:
+- GraphQL fetching from mock server
+- SQLite storage for offline use
+- Create/edit/delete users
+- Form validation (names, emails)
+- Tab switching with smooth animations
+- Swipe between tabs (or click - both work)
+- Search that filters in real-time
+- Pull to refresh
+- Alphabetical grouping
+- TypeScript everywhere (strict mode on)
+- Tests for the important parts
 
-## Notes
+## Couple of notes
 
-- Using Expo for compatibility
-- Mock server must be running
-- First launch syncs data from GraphQL
-- All user mutations are local-only (per requirements)
-- iOS and Android both supported
+Using Expo because it makes cross-platform easier. Mock server has to be running or the initial data fetch fails. First time you launch it syncs from GraphQL, after that it's all local. User changes (add/edit/delete) only touch the local database - no API mutations.
+
+Works on both iOS and Android.

@@ -52,7 +52,7 @@ fi
 echo ""
 echo "Installing app dependencies..."
 if [ "$PKG_MGR" = "npm" ]; then
-    npm install
+    npm install --legacy-peer-deps
 else
     yarn install
 fi
@@ -68,7 +68,7 @@ if [ -d "node_modules" ]; then
 fi
 
 if [ "$PKG_MGR" = "npm" ]; then
-    npm install
+    npm install --legacy-peer-deps
 else
     yarn install
 fi

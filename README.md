@@ -1,180 +1,132 @@
 # ListApp
 
-User management app for Zeller code challenge. Fetches users from GraphQL API, stores them locally in SQLite, and provides full CRUD operations with filtering and search.
+A user management app built for the Zeller coding challenge. It pulls users from a GraphQL API, stores them in SQLite locally, and lets you do the usual CRUD stuff with some filtering and search thrown in.
 
-## What's implemented
+## What's in here
 
-- GraphQL integration using Apollo Client
-- SQLite local database for offline-first architecture
-- Add, update, delete users with form validation
-- Filter by user type (Admin/Manager) and search by name
-- Tab-based filtering with animated indicator
-- Swipeable pages between All/Admin/Manager lists (using PagerView)
-- Smooth horizontal animations for both swipe and tab clicks
-- Toggleable search (click search icon to show/hide search bar)
-- Pull-to-refresh functionality
-- Alphabetically grouped user list with section headers
-- Clean architecture with separation of concerns
+Built out a few things:
+- GraphQL integration (using Apollo Client)
+- SQLite for local storage - works offline
+- Add/edit/delete users with validation
+- Filter by Admin or Manager role
+- Search by name
+- Tab navigation with that animated blue indicator
+- Swipeable pages (you can swipe between tabs or just click them)
+- Search bar that slides in when you tap the icon
+- Pull down to refresh
+- Users grouped alphabetically with section headers
 
-## Tech Stack
+## Stack
 
-- React Native + Expo SDK 54
-- TypeScript (strict mode)
-- Apollo Client for GraphQL
-- Expo SQLite for local persistence
-- React Navigation for routing
-- Jest + React Native Testing Library
-- Custom animated tab indicator
+React Native with Expo (SDK 54), TypeScript in strict mode, Apollo Client for the GraphQL stuff, SQLite for local data, React Navigation, and Jest for testing. Pretty standard setup.
 
-## Prerequisites
+## Before you start
 
-You'll need:
-- Node.js 18+ 
-- Xcode (for iOS) - get it from the Mac App Store
-- CocoaPods - `sudo gem install cocoapods`
-- Android Studio (if you want to run on Android)
+Make sure you have:
+- Node 18 or higher
+- Xcode if you're on Mac (grab it from the App Store)
+- CocoaPods: `sudo gem install cocoapods`
+- Android Studio if you want Android support
 
-Optional but helpful:
-- Watchman - `brew install watchman`
-- Expo Go app on your phone for quick testing
+Nice to have:
+- Watchman (`brew install watchman`) - makes things faster
+- Expo Go on your phone for quick testing
 
 ## Getting Started
 
-### Quick Start (2 commands)
+Easiest way - just run these two commands:
 
 ```bash
-bash setup.sh    # Install dependencies (one time)
-bash start.sh    # Start everything (opens new terminal tabs)
+bash setup.sh    # One time thing to install everything
+bash start.sh    # Starts the servers
 ```
 
-> **Note:** Using `bash` prefix works on any system without needing execute permissions.
+The start script opens two terminal tabs - one for the mock GraphQL server (on port 9002) and one for Expo. Once Expo's running, just press `i` for iOS or `a` for Android.
 
-The `start.sh` script automatically:
-- Opens mock GraphQL server in a new tab (port 9002)
-- Opens Expo dev server in another tab
-- Once Expo starts, press `i` for iOS or `a` for Android
-
-### Manual Start (if needed)
-
-If you prefer to start things manually:
+If you don't want the automatic tab thing, you can do it manually:
 
 ```bash
-# Terminal 1 - Mock server
-cd mock-server
-npm start
+# Terminal 1
+cd mock-server && npm start
 
-# Terminal 2 - App
+# Terminal 2
 npm start
 ```
 
-## Running it
+Then press `i` or `a` when prompted.
 
-```bash
-npm start         # Start dev server
-npm run ios       # Run on iOS simulator
-npm run android   # Run on Android emulator
-```
-
-Or use Expo Go on your phone - just scan the QR code after running `npm start`.
+You can also scan the QR code with Expo Go on your phone if you prefer that.
 
 ## Tests
 
 ```bash
 npm test              # Run all tests
-npm test -- --watch   # Watch mode
-npm test -- --coverage # With coverage
+npm test -- --watch   # Watch mode for development
+npm test -- --coverage # See coverage report
 ```
+
+Got around 92% coverage on the important stuff.
 
 ## Project Structure
 
+Pretty straightforward:
+
 ```
 src/
-├── components/      # Reusable components
-├── screens/         # Screen components
-├── navigation/      # Navigation setup
-├── services/        # GraphQL and API calls
-├── database/        # Local database setup
+├── components/      # UI components
+├── screens/         # Main screens
+├── navigation/      # Navigation config
+├── services/        # GraphQL stuff
+├── database/        # SQLite wrapper
 ├── hooks/           # Custom hooks
-├── utils/           # Helper functions
-├── types/           # TypeScript types
+├── utils/           # Helpers and validation
+├── types/           # TypeScript definitions
 └── __tests__/       # Tests
 ```
 
-## Development notes
+## Development
 
-Using functional components and hooks throughout. TypeScript is configured pretty strictly, so you should get type errors if something's wrong.
+Using functional components everywhere. TypeScript's in strict mode so it'll yell at you if something's wrong - which is good.
 
-For adding packages, use:
+If you need to add packages:
 ```bash
 npx expo install <package-name>
 ```
+This keeps everything compatible with Expo.
 
-This ensures Expo compatibility.
+## When things go wrong
 
-## Troubleshooting
-
-If things break:
-
+Clear the cache first:
 ```bash
-# Clear cache and restart
 npx expo start -c
+```
 
-# Nuclear option - delete everything and reinstall
+If that doesn't work:
+```bash
 rm -rf node_modules
 npm install
 ```
 
-If the iOS build fails, try:
+iOS giving you trouble? Try this:
 ```bash
-cd ios
-rm -rf Pods Podfile.lock
-pod install
-cd ..
+cd ios && rm -rf Pods Podfile.lock && pod install && cd ..
 ```
 
-## Project Structure
+## How it's built
 
-The codebase follows clean architecture principles:
+**Database**: Custom SQLite wrapper with async/await. Has all the usual CRUD stuff plus search and bulk inserts for syncing with the API.
 
-- **database/** - SQLite wrapper with async/await API
-- **services/** - GraphQL client and API calls
-- **hooks/** - Custom React hooks for data management
-- **components/** - Reusable UI components
-- **screens/** - Screen-level components
-- **utils/** - Validation and helper functions
-- **types/** - TypeScript type definitions
-- **__tests__/** - Unit and component tests
+**GraphQL**: Apollo Client with TypeScript types. Fetches from the mock server on port 9002.
 
-## Implementation Highlights
+**Validation**: Name can't have special characters (max 50 chars), email format is checked, errors show up as you type.
 
-**Database Layer**
-- Custom SQLite wrapper with full CRUD operations
-- Bulk insert for API sync
-- Search functionality
+**Animations**: The tab indicator uses spring animations to follow whichever tab is active. Works whether you swipe or click.
 
-**GraphQL Integration**
-- Apollo Client setup with proper typing
-- Network-first fetch policy
-- Error handling
+**Tests**: Covered the validation logic, helper functions, and main components. Used React Native Testing Library for the component tests.
 
-**Form Validation**
-- Name validation (no special chars, max 50 chars)
-- Email format validation
-- Real-time error display
+## Quick notes
 
-**Tab Animation**
-- Animated indicator following active tab
-- Spring animation for smooth transitions
-- Follows the design spec
-
-**Testing**
-- Validation logic tests
-- Helper function tests
-- Component tests with React Native Testing Library
-
-## Notes
-
-- Mock server runs on port 9002
-- Database is initialized on app startup
-- All data fetched from GraphQL is stored locally first
-- User operations (add/update/delete) are local-only
+- Mock server needs to be running (port 9002)
+- Database gets set up automatically on first launch
+- GraphQL data is cached locally in SQLite
+- Add/update/delete operations only touch the local database
