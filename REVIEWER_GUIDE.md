@@ -49,8 +49,6 @@ npm run test:watch    # Watch mode
 npm run test:coverage # See coverage
 ```
 
-Currently sitting at ~92% coverage.
-
 ## Files worth looking at
 
 If you want to dig into the code:
