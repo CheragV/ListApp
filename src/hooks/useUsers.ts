@@ -77,6 +77,10 @@ export const useUsers = () => {
     return await database.searchUsers(query);
   }, [users]);
 
+  const getUserById= useCallback(async (id: string): Promise<User | null> => {
+    return await database.getUserById(id);
+  }, []);
+
   const filterUsersByTab = useCallback(
     (tab: TabType): User[] => {
       if (tab === 'All') return users;
@@ -97,6 +101,7 @@ export const useUsers = () => {
     refresh,
     addUser,
     updateUser,
+    getUserById, 
     deleteUser,
     searchUsers,
     filterUsersByTab,

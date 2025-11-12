@@ -49,13 +49,3 @@ export const fetchCustomersFromAPI = async (): Promise<User[]> => {
   }
 };
 
-export const getCustomerByIdQuery = gql`
-  query GetZellerCustomer($id: String!) {
-    getZellerCustomer(id: $id) {
-      id
-      name
-      email
-      role
-    }
-  }
-`;

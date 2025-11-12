@@ -62,18 +62,12 @@ npm start
 
 ```bash
 npm test              # All tests
-npm test -- --watch   # Watch mode
-npm test -- --coverage # Coverage report
+npm run test:watch    # Watch mode
+npm run test:coverage # Coverage report
 ```
 
-26 tests covering:
-- Form validation logic
-- Helper functions
-- Component rendering
 
 ## Code to Review
-
-Key files demonstrating Tech Lead capabilities:
 
 **Architecture**
 - `src/database/db.ts` - Clean database abstraction
