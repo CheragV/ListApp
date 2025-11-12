@@ -61,34 +61,34 @@ class Database {
     if (!this.db) throw new Error('Database not initialized');
 
     await this.db.runAsync(
-      'INSERT INTO users (id, name, email, role) VALUES (?, ?, ?, ?)',
+      'INSERT OR REPLACE INTO users (id, name, email, role) VALUES (?, ?, ?, ?)',
       [user.id, user.name, user.email, user.role]
     );
   }
 
-  async updateUser(id: string, user: Partial<UserInput>): Promise<void> {
+  async updateUser(id: string, updates: Partial<UserInput>): Promise<void> {
     if (!this.db) throw new Error('Database not initialized');
 
-    const updates: string[] = [];
+    const fields: string[] = [];
     const values: any[] = [];
 
-    if (user.name !== undefined) {
-      updates.push('name = ?');
-      values.push(user.name);
+    if (updates.name !== undefined) {
+      fields.push('name = ?');
+      values.push(updates.name);
     }
-    if (user.email !== undefined) {
-      updates.push('email = ?');
-      values.push(user.email);
+    if (updates.email !== undefined) {
+      fields.push('email = ?');
+      values.push(updates.email);
     }
-    if (user.role !== undefined) {
-      updates.push('role = ?');
-      values.push(user.role);
+    if (updates.role !== undefined) {
+      fields.push('role = ?');
+      values.push(updates.role);
     }
 
-    if (updates.length === 0) return;
+    if (fields.length === 0) return;
 
     values.push(id);
-    const query = `UPDATE users SET ${updates.join(', ')} WHERE id = ?`;
+    const query = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
 
     await this.db.runAsync(query, values);
   }
@@ -102,11 +102,12 @@ class Database {
   async bulkInsertUsers(users: User[]): Promise<void> {
     if (!this.db) throw new Error('Database not initialized');
 
+    // Insert initial data from API (only called when DB is empty)
     const placeholders = users.map(() => '(?, ?, ?, ?)').join(', ');
     const values = users.flatMap(u => [u.id, u.name, u.email, u.role]);
 
     await this.db.runAsync(
-      `INSERT OR REPLACE INTO users (id, name, email, role) VALUES ${placeholders}`,
+      `INSERT INTO users (id, name, email, role) VALUES ${placeholders}`,
       values
     );
   }

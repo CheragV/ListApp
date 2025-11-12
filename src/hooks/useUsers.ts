@@ -25,8 +25,15 @@ export const useUsers = () => {
 
   const syncWithAPI = useCallback(async () => {
     try {
-      const apiUsers = await fetchCustomersFromAPI();
-      await database.bulkInsertUsers(apiUsers);
+      // Only fetch from API if database is empty (initial load)
+      const existingUsers = await database.getAllUsers();
+      if (existingUsers.length === 0) {
+        console.log('Database empty, fetching initial data from API...');
+        const apiUsers = await fetchCustomersFromAPI();
+        await database.bulkInsertUsers(apiUsers);
+      } else {
+        console.log('Database has data, skipping API fetch');
+      }
       await loadUsers();
     } catch (err) {
       console.error('Failed to sync with API:', err);

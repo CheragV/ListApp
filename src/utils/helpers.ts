@@ -25,3 +25,10 @@ export const getInitials = (name: string): string => {
   }
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 };
+
+// Check if a userId is from the API vs locally generated
+export const isApiUser = (id: string): boolean => {
+  // API users have simple numeric ids like 1, 2, 3
+  // Local users have timestamp based ids like "1731428467123-abc123def"
+  return /^\d+$/.test(id);
+};
